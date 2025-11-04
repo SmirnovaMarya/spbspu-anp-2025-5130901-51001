@@ -15,7 +15,7 @@ namespace smirnova {
     int rows, cols;
     int matrix[1000] = {};
     int localmaximum() const;
-    int elementsdiagonal() const; 
+    int elementsdiagonal() const;
   };
 }
 int smirnova::Static::localmaximum() const {
@@ -49,10 +49,10 @@ int smirnova::Dynamic::localmaximum() const {
     return count;
 }
 int smirnova::Static::elementsdiagonal() const {
-  int n = (rows < cols ? rows : cols); 
+  int n = (rows < cols ? rows : cols);
     int maxsum = 0;
     for (int sum = 0; sum <= 2*(n-1); ++sum) {
-      if (sum == n-1) continue; 
+      if (sum == n-1) continue;
         int diagsum = 0;
         for (int i = 0; i < n; ++i) {
           int j = sum - i;
@@ -65,10 +65,10 @@ int smirnova::Static::elementsdiagonal() const {
     return maxsum;
 }
 int smirnova::Dynamic::elementsdiagonal() const {
-  int n = (rows < cols ? rows : cols); 
+  int n = (rows < cols ? rows : cols);
   int maxsum = 0;
   for (int sum = 0; sum <= 2*(n-1); ++sum) {
-    if (sum == n-1) continue; 
+    if (sum == n-1) continue;
     int diagsum = 0;
     for (int i = 0; i < n; ++i) {
       int j = sum - i;
@@ -106,7 +106,7 @@ int main(int argc, char** argv) {
       return 0;
     }
     else {
-      for (int i = 0; i < s.rows * s.cols; ++i) { 
+      for (int i = 0; i < s.rows * s.cols; ++i) {
         if (!(input >> s.matrix[i]) || std::abs(s.matrix[i]) > 1000000) {
           std::cerr << "Error: invalid element or out of range\n";
           return 2;
@@ -120,11 +120,11 @@ int main(int argc, char** argv) {
       input.close();
       std::ofstream output(argv[3]);
       output << s.localmaximum() << "\n";
-      output << s.elementsdiagonal() << "\n"; 
+      output << s.elementsdiagonal() << "\n";
       output.close();
     }
   }
-  else { 
+  else {
     std::ifstream input(argv[2]);
     if (!input.is_open()) {
       std::cerr << "Cannot open input file\n";
@@ -158,7 +158,7 @@ int main(int argc, char** argv) {
       input.close();
       std::ofstream output(argv[3]);
       output << d.localmaximum() << "\n";
-      output << d.elementsdiagonal() << "\n"; 
+      output << d.elementsdiagonal() << "\n";
       output.close();
       d.freed();
     }
