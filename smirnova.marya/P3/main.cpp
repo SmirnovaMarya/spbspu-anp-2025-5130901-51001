@@ -20,49 +20,57 @@ namespace smirnova {
 }
 int smirnova::Static::localmaximum() const {
   int count = 0;
-    for (int i = 1; i < rows - 1; ++i) {
-      for (int j = 1; j < cols - 1; ++j) {
-         int val = matrix[i * cols + j];
-           if (matrix[i * cols + j - 1] < val &&
-             matrix[i * cols + j + 1] < val &&
-             matrix[(i - 1) * cols + j] < val &&
-             matrix[(i + 1) * cols + j] < val) {
-             ++count;
-           }
+  for (int i = 1; i < rows - 1; ++i) {
+    for (int j = 1; j < cols - 1; ++j) {
+      int val = matrix[i * cols + j];
+      if (matrix[i * cols + j - 1] < val &&
+        matrix[i * cols + j + 1] < val &&
+        matrix[(i - 1) * cols + j] < val &&
+        matrix[(i + 1) * cols + j] < val &&
+        matrix[(i - 1) * cols + j - 1] < val &&
+        matrix[(i + 1) * cols + j + 1] < val &&
+        matrix[(i + 1) * cols + j - 1] < val &&
+        matrix[(i - 1) * cols + j + 1] < val) {
+        ++count;
       }
     }
-    return count;
+  }
+  return count;
 }
 int smirnova::Dynamic::localmaximum() const {
   int count = 0;
-    for (int i = 1; i < rows - 1; ++i) {
-      for (int j = 1; j < cols - 1; ++j) {
-        int val = matrix[i * cols + j];
-          if (matrix[i * cols + j - 1] < val &&
-            matrix[i * cols + j + 1] < val &&
-            matrix[(i - 1) * cols + j] < val &&
-            matrix[(i + 1) * cols + j] < val) {
-            ++count;
-          }
+  for (int i = 1; i < rows - 1; ++i) {
+    for (int j = 1; j < cols - 1; ++j) {
+      int val = matrix[i * cols + j];
+      if (matrix[i * cols + j - 1] < val &&
+        matrix[i * cols + j + 1] < val &&
+        matrix[(i - 1) * cols + j] < val &&
+        matrix[(i + 1) * cols + j] < val &&
+        matrix[(i - 1) * cols + j - 1] < val &&
+        matrix[(i + 1) * cols + j + 1] < val &&
+        matrix[(i + 1) * cols + j - 1] < val &&
+        matrix[(i - 1) * cols + j + 1] < val) {
+        ++count;
       }
     }
-    return count;
+  }
+  return count;
 }
 int smirnova::Static::elementsdiagonal() const {
   int n = (rows < cols ? rows : cols);
-    int maxsum = 0;
-    for (int sum = 0; sum <= 2*(n-1); ++sum) {
-      if (sum == n-1) continue;
-        int diagsum = 0;
-        for (int i = 0; i < n; ++i) {
-          int j = sum - i;
-          if (j >= 0 && j < n) {
-            diagsum += matrix[i * cols + j];
-          }
+  int maxsum = 0;
+  for (int sum = 0; sum <= 2*(n-1); ++sum) {
+    if (sum == n-1) continue;
+      int diagsum = 0;
+      for (int i = 0; i < n; ++i) {
+        int j = sum - i;
+        if (j >= 0 && j < n) {
+          diagsum += matrix[i * cols + j];
         }
-        if (diagsum > maxsum) maxsum = diagsum;
-    }
-    return maxsum;
+      }
+      if (diagsum > maxsum) maxsum = diagsum;
+  }
+  return maxsum;
 }
 int smirnova::Dynamic::elementsdiagonal() const {
   int n = (rows < cols ? rows : cols);
@@ -119,7 +127,8 @@ int main(int argc, char** argv) {
       }
       input.close();
       std::ofstream output(argv[3]);
-      output << s.localmaximum() << "\n";
+      if (s.rows >=3 && s.cols >= 3) output << s.localmaximum() << "\n";
+      else output << "0\n";
       output << s.elementsdiagonal() << "\n";
       output.close();
     }
@@ -157,7 +166,8 @@ int main(int argc, char** argv) {
       }
       input.close();
       std::ofstream output(argv[3]);
-      output << d.localmaximum() << "\n";
+      if (d.rows >=3 && d.cols >= 3) output << d.localmaximum() << "\n";
+      else output << "0\n";
       output << d.elementsdiagonal() << "\n";
       output.close();
       d.freed();
