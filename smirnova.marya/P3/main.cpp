@@ -10,19 +10,22 @@ int smirnova::localmaximum(size_t rows, size_t cols, int *matrix)
 {
   int count = 0;
   int d[8][2] = {{-1,-1}, {-1,0}, {-1,1}, {0,-1}, {0,1}, {1,-1}, {1,0}, {1,1}};
-  for (size_t i = 0; i < rows - 1; ++i)
+  for (size_t i = 1; i < rows - 1; ++i)
   {
-    for (size_t j = 0; j < cols - 1; ++j)
+    for (size_t j = 1; j < cols - 1; ++j)
     {
       int val = matrix[i*cols + j];
       bool flag = true;
       for (int k = 0; k < 8 && flag; ++k)
       {
-        int ni = i + d[k][0];
-        int nj = j + d[k][1];
-        if (matrix[ni*cols + nj] >= val)
+        int ni = static_cast<int>(i) + d[k][0];
+        int nj = static_cast<int>(j) + d[k][1];
+        if (ni >= 0 && ni < static_cast<int>(rows) && nj >= 0 && nj < static_cast<int>(cols) && matrix[ni*cols + nj] >= val)
         {
-          flag = false;
+          if (matrix[ni*cols + nj] >= val)
+          {
+            flag = false;
+          }
         }
       }
       if (flag)
@@ -72,7 +75,6 @@ int main(int argc, char** argv)
   char* a = argv[1];
   if (argc != 4)
   {
-    std::cerr << "Incorrect number of arguments\n";
     return 1;
   }
   while (*a == ' ')
