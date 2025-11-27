@@ -50,7 +50,7 @@ int main()
     std::cerr << "Couldn't read the first line\n";
     return 1;
   }
-  if (!std::getline(std::cin, l2)) 
+  if (!std::getline(std::cin, l2))
   {
     l2 = "Hello, 1 user from 1 terminal\n";
   }
