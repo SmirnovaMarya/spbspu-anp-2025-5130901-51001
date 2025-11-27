@@ -1,25 +1,31 @@
 #include <iostream>
 #include <cctype>
 #include <cstring>
+#include <cstdlib>
 namespace smirnova
 {
   int identical_str(const char *a, const char *b, size_t n, size_t m)
   {
-    int result = 0;
     for (size_t i = 0; i < n; i++)
     {
       for (size_t j = 0; j < m; j++)
       {
         if (a[i] == b[j])
         {
-          result = 1;
+          return 1;
         }
       }
     }
-    return result;
+    return 0;
   }
-  void concatenation_str(const char *a, const char *b, char *result, size_t n, size_t m)
+  char *concatenation_str(const char *a, const char *b, size_t n, size_t m)
   {
+    size_t length = n + m + 1;
+    char *result = static_cast<char *>(std::malloc(length));
+    if (!result)
+    {
+      return nullptr;
+    }
     size_t count = 0;
     for (size_t i = 0; i < n; i++)
     {
@@ -40,6 +46,7 @@ namespace smirnova
       }
     }
     result[count] = '\0';
+    return result;
   }
 }
 int main()
@@ -56,25 +63,15 @@ int main()
   }
   size_t n = l1.length();
   size_t m = l2.length();
-  try
+  int a = smirnova::identical_str(l1.c_str(), l2.c_str(), n, m);
+  std::cout << a << "\n";
+  char *result2 = smirnova::concatenation_str(l1.c_str(), l2.c_str(), n, m);
+  if (!result2)
   {
-    size_t length = n + m + 1;
-    char *result2 = new char[length];
-    if (!result2)
-    {
-      std::cerr << "Memory allocation error\n";
-      return 1;
-    }
-    int a = smirnova::identical_str(l1.c_str(), l2.c_str(), n, m);
-    std::cout << a << "\n";
-    smirnova::concatenation_str(l1.c_str(), l2.c_str(), result2, n, m);
-    std::cout << result2 << "\n";
-    delete[] result2;
-  }
-  catch (const std::exception &e)
-  {
-    std::cerr << "Error: " << e.what() << "\n";
+    std::cerr << "Memory allocation error\n";
     return 1;
   }
+  std::cout << result2 << "\n";
+  std::free(result2);
   return 0;
 }
